@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { ColorModeContext, useMode } from './theme';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import MSiderbar from './scenes/layout/MSidebar';
+import MTopbar from './scenes/layout/MTopbar';
+import MRoutes from './routes/MRoutes';
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -12,7 +14,11 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <div className="app">
-          <MSiderbar />
+          <MSiderbar isSidebar={isSidebar} />
+          <main className="content">
+            <MTopbar setIsSidebar={setIsSidebar} />
+            <MRoutes />
+          </main>
         </div>
       </ThemeProvider>
     </ColorModeContext.Provider>
