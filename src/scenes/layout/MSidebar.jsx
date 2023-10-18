@@ -5,9 +5,12 @@ import { useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined';
 import PeopleIcon from '@mui/icons-material/People';
+import SubscriptionsOutlinedIcon from '@mui/icons-material/SubscriptionsOutlined';
+import Person3OutlinedIcon from '@mui/icons-material/Person3Outlined';
 import ConnectWithoutContactIcon from '@mui/icons-material/ConnectWithoutContact';
 import { ProSidebar, Menu, SubMenu, MenuItem } from 'react-pro-sidebar';
 import 'react-pro-sidebar/dist/css/styles.css';
+import { MSideSubTitle } from '../../components/MSideComp';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -112,7 +115,15 @@ const MSidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-            <SubMenu title="사람들" icon={<PeopleIcon />}>
+            <MSideSubTitle title="목사님 말씀" />
+            <Item
+              title="Youtube 영상"
+              to="/youtube-pastor"
+              icon={<SubscriptionsOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <SubMenu title="사람들" icon={<Person3OutlinedIcon />}>
               <Item
                 title="Manage Team"
                 to="/team"
