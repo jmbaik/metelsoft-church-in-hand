@@ -1,5 +1,5 @@
 import { Box, Button, Typography, useTheme } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import { tokens } from '../../theme';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
 import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
@@ -7,10 +7,13 @@ import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined';
 import MHeader from '../../components/MHeader';
 import { DataGrid } from '@mui/x-data-grid';
 import { mockDataTeam } from '../../data/mockData';
+import Youon from './Youon';
+import { useNavigate } from 'react-router-dom';
 
 const PastorYoutubeList = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const navigate = useNavigate();
   const columns = [
     { field: 'id', headerName: 'ID' },
     {
@@ -50,7 +53,7 @@ const PastorYoutubeList = () => {
                 color: colors.blueAccent[200],
               }}
               onClick={() => {
-                alert(id + ' id is ' + id);
+                navigate('/you-on');
               }}
             >
               {access}
@@ -61,50 +64,50 @@ const PastorYoutubeList = () => {
     },
   ];
 
-  const { data } = mockDataTeam;
-
   return (
-    <Box m="20px">
-      <MHeader title="Youtube 영상" subtitle="목사님 영상" />
-      <Box
-        m="40px 0 0 0"
-        height="75vh"
-        sx={{
-          '& .MuiDataGrid-root': {
-            border: 'none',
-          },
-          '& .MuiDataGrid-cell': {
-            borderBottom: 'none',
-          },
-          '& .name-column--cell': {
-            color: colors.greenAccent[300],
-          },
-          '& .MuiDataGrid-columnHeaders': {
-            backgroundColor: colors.blueAccent[700],
-            borderBottom: 'none',
-          },
-          '& .MuiDataGrid-virtualScroller': {
-            backgroundColor: colors.primary[400],
-          },
-          '& .MuiDataGrid-footerContainer': {
-            borderTop: 'none',
-            backgroundColor: colors.blueAccent[700],
-          },
-          '& .MuiCheckbox-root': {
-            color: `${colors.greenAccent[200]} !important`,
-          },
-        }}
-      >
-        <DataGrid
-          checkboxSelection
-          rows={mockDataTeam}
-          columns={columns}
-          initialState={{
-            pagination: { paginationModel: { pageSize: 5 } },
+    <>
+      <Box m="20px">
+        <MHeader title="Youtube 영상" subtitle="목사님 영상" />
+        <Box
+          m="40px 0 0 0"
+          height="75vh"
+          sx={{
+            '& .MuiDataGrid-root': {
+              border: 'none',
+            },
+            '& .MuiDataGrid-cell': {
+              borderBottom: 'none',
+            },
+            '& .name-column--cell': {
+              color: colors.greenAccent[300],
+            },
+            '& .MuiDataGrid-columnHeaders': {
+              backgroundColor: colors.blueAccent[700],
+              borderBottom: 'none',
+            },
+            '& .MuiDataGrid-virtualScroller': {
+              backgroundColor: colors.primary[400],
+            },
+            '& .MuiDataGrid-footerContainer': {
+              borderTop: 'none',
+              backgroundColor: colors.blueAccent[700],
+            },
+            '& .MuiCheckbox-root': {
+              color: `${colors.greenAccent[200]} !important`,
+            },
           }}
-        />
+        >
+          <DataGrid
+            checkboxSelection
+            rows={mockDataTeam}
+            columns={columns}
+            initialState={{
+              pagination: { paginationModel: { pageSize: 5 } },
+            }}
+          />
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 
