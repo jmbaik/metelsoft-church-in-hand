@@ -14,6 +14,7 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import AreacodeList from './AreacodeList';
+import ChurchCodeList from './ChurchCodeList';
 
 const CommonCode = () => {
   const theme = useTheme();
@@ -26,7 +27,19 @@ const CommonCode = () => {
     setValue(newValue);
   };
   return (
-    <Box m="20px">
+    <Box
+      m="20px"
+      sx={{
+        '& .MuiTab-textColorPrimary': {
+          color: '#ffffff',
+          fontSize: 14,
+        },
+        '& .Mui-selected': {
+          color: colors.greenAccent[400],
+          fontSize: 18,
+        },
+      }}
+    >
       <MHeader title="코드 등록" subtitle="공통 코드 등록" />
       <Box m="20px 0 0 0">
         <Box sx={{ width: '100%', typography: 'body1' }}>
@@ -35,21 +48,11 @@ const CommonCode = () => {
               sx={{
                 borderBottom: 1,
                 borderColor: 'divider',
-                '& .Mui-selected': {
-                  color: '#fff',
-                  fontSize: 18,
-                },
               }}
             >
               <TabList
                 onChange={handleChange}
                 aria-label="lab API tabs example"
-                sx={{
-                  '& .Mui-selected': {
-                    color: '#fff',
-                    fontSize: 18,
-                  },
-                }}
               >
                 <Tab label="지역 코드 등록" value="1" />
                 <Tab label="교회 코드 등록" value="2" />
@@ -59,7 +62,9 @@ const CommonCode = () => {
             <TabPanel value="1">
               <AreacodeList />
             </TabPanel>
-            <TabPanel value="2"></TabPanel>
+            <TabPanel value="2">
+              <ChurchCodeList />
+            </TabPanel>
             <TabPanel value="3"></TabPanel>
           </TabContext>
         </Box>

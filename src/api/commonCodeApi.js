@@ -17,3 +17,15 @@ export const useFetchAreaCode = () => {
   });
   return { data, isLoading, isError, error };
 };
+
+export const useFetchChurchCode = () => {
+  const { isLoading, data, isError, error } = useQuery({
+    queryKey: ['common-code/church-code-list'],
+    queryFn: async () => {
+      const response = await apiFetch.get('/common-code/church-code');
+      return response.data.result;
+    },
+    keepPreviousData: true,
+  });
+  return { data, isLoading, isError, error };
+};
