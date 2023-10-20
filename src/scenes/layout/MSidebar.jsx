@@ -8,6 +8,7 @@ import PeopleIcon from '@mui/icons-material/People';
 import SubscriptionsOutlinedIcon from '@mui/icons-material/SubscriptionsOutlined';
 import Person3OutlinedIcon from '@mui/icons-material/Person3Outlined';
 import ConnectWithoutContactIcon from '@mui/icons-material/ConnectWithoutContact';
+import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
 import { ProSidebar, Menu, SubMenu, MenuItem } from 'react-pro-sidebar';
 import 'react-pro-sidebar/dist/css/styles.css';
 import { MSideSubTitle } from '../../components/MSideComp';
@@ -112,6 +113,13 @@ const MSidebar = () => {
               title="Dashboard"
               to="/"
               icon={<GridViewOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="코드 등록 [관리자]"
+              to="/common-code"
+              icon={<AdminPanelSettingsOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
