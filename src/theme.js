@@ -206,6 +206,23 @@ export const useMode = () => {
     }),
     []
   );
-  const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
+  const theme = useMemo(
+    () =>
+      createTheme(themeSettings(mode), {
+        components: {
+          MuiTab: {
+            styleOverrides: {
+              root: {
+                '&.Mui-selected': {
+                  color: tokens(mode).greenAccent[400],
+                  fontSize: 18,
+                },
+              },
+            },
+          },
+        },
+      }),
+    [mode]
+  );
   return [theme, colorMode];
 };

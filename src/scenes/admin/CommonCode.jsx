@@ -27,19 +27,7 @@ const CommonCode = () => {
     setValue(newValue);
   };
   return (
-    <Box
-      m="20px"
-      sx={{
-        '& .MuiTab-textColorPrimary': {
-          color: '#ffffff',
-          fontSize: 14,
-        },
-        '& .Mui-selected': {
-          color: colors.greenAccent[400],
-          fontSize: 18,
-        },
-      }}
-    >
+    <Box m="20px">
       <MHeader title="코드 등록" subtitle="공통 코드 등록" />
       <Box m="20px 0 0 0">
         <Box sx={{ width: '100%', typography: 'body1' }}>

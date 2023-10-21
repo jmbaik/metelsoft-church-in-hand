@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined';
-import PeopleIcon from '@mui/icons-material/People';
 import SubscriptionsOutlinedIcon from '@mui/icons-material/SubscriptionsOutlined';
 import Person3OutlinedIcon from '@mui/icons-material/Person3Outlined';
 import ConnectWithoutContactIcon from '@mui/icons-material/ConnectWithoutContact';
