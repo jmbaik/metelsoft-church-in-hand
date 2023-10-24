@@ -1,16 +1,18 @@
 import React from 'react';
 import { useFetchChurchCode } from '../../api/commonCodeApi';
 import MGrid from '../../components/MGrid';
-import { Box } from '@mui/material';
+import { Box, Button, useTheme } from '@mui/material';
 import MButton from '../../components/MButton';
 import AppRegistrationOutlinedIcon from '@mui/icons-material/AppRegistrationOutlined';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import { useState } from 'react';
 import ChurchCodeSave from './ChurchCodeSave';
+import { tokens } from '../../theme';
 
 const ChurchCodeList = () => {
   const { isLoading, data, isError, error } = useFetchChurchCode();
-
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   const columns = [
     {
       field: 'churchCode',
@@ -48,7 +50,7 @@ const ChurchCodeList = () => {
           }}
         >
           {!editable && <AppRegistrationOutlinedIcon sx={{ mr: '10px' }} />}
-          {editable && <SaveOutlinedIcon sx={{ mr: '10px' }} />}
+          {editable && '목록으로'}
         </MButton>
       </Box>
       {!editable && <MGrid rowId="churchCode" data={data} cols={columns} />}

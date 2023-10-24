@@ -11,7 +11,7 @@ const AreacodeList = () => {
   const { isLoading, data, isError, error } = useFetchAreaCode();
 
   const columns = [
-    { field: 'acode', headerName: 'Area Code' },
+    { field: 'areaCode', headerName: 'Area Code' },
     {
       field: 'name',
       headerName: '지역명',
@@ -60,7 +60,7 @@ const AreacodeList = () => {
       }}
     >
       <DataGrid
-        getRowId={(row) => row.acode}
+        getRowId={(row) => row.areaCode}
         rows={data ?? []}
         columns={columns}
       />
