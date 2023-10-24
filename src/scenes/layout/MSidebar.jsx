@@ -102,7 +102,7 @@ const MSidebar = () => {
                   White Fox
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
-                  VP Fancy Admin
+                  Super Admin
                 </Typography>
               </Box>
             </Box>

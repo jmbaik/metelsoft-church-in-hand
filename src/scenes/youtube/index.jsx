@@ -102,8 +102,9 @@ const PastorYoutubeList = () => {
             rows={mockDataTeam}
             columns={columns}
             initialState={{
-              pagination: { paginationModel: { pageSize: 5 } },
+              pagination: { paginationModel: { pageSize: 10 } },
             }}
+            pageSizeOptions={[5, 10, 25]}
           />
         </Box>
       </Box>
