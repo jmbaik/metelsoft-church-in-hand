@@ -41,6 +41,7 @@ const MGrid = (props) => {
       }}
     >
       <DataGrid
+        onRowDoubleClick={(param) => props.onRowDoubleClick(param.row)}
         getRowId={(row) => row[props.rowId]}
         rows={props.data ?? []}
         columns={props.cols}

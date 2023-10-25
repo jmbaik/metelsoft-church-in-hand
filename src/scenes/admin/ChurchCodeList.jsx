@@ -39,6 +39,10 @@ const ChurchCodeList = () => {
     },
   ];
 
+  function doubleClicked(param) {
+    console.log(param);
+  }
+
   const [editable, setEditable] = useState(false);
   const { isLoading, data, isError, error } = useFetchChurchCode();
   if (isLoading) return <h3>Loading...</h3>;
@@ -58,7 +62,14 @@ const ChurchCodeList = () => {
           {editable && '목록으로'}
         </MButton>
       </Box>
-      {!editable && <MGrid rowId="churchCode" data={data} cols={columns} />}
+      {!editable && (
+        <MGrid
+          onRowDoubleClick={doubleClicked}
+          rowId="churchCode"
+          data={data}
+          cols={columns}
+        />
+      )}
       {editable && <ChurchCodeSave upperFn={fnSub} />}
     </>
   );
