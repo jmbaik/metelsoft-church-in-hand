@@ -10,7 +10,6 @@ import ChurchCodeSave from './ChurchCodeSave';
 import { tokens } from '../../theme';
 
 const ChurchCodeList = () => {
-  const { isLoading, data, isError, error } = useFetchChurchCode();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const columns = [
@@ -41,6 +40,12 @@ const ChurchCodeList = () => {
   ];
 
   const [editable, setEditable] = useState(false);
+  const { isLoading, data, isError, error } = useFetchChurchCode();
+  if (isLoading) return <h3>Loading...</h3>;
+
+  const fnSub = (isRead) => {
+    setEditable(!isRead);
+  };
   return (
     <>
       <Box display="flex" justifyContent="flex-end">
@@ -54,7 +59,7 @@ const ChurchCodeList = () => {
         </MButton>
       </Box>
       {!editable && <MGrid rowId="churchCode" data={data} cols={columns} />}
-      {editable && <ChurchCodeSave />}
+      {editable && <ChurchCodeSave upperFn={fnSub} />}
     </>
   );
 };

@@ -11,13 +11,14 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import React from 'react';
-import { useFetchAreaCode } from '../../api/commonCodeApi';
+import { useFetchAreaCode, useSaveChurchCode } from '../../api/commonCodeApi';
 import { useForm } from 'react-hook-form';
 
-const ChurchCodeSave = () => {
+const ChurchCodeSave = (props) => {
   const isNonMobile = useMediaQuery('(min-width:600px');
   const { data: areaCodeList } = useFetchAreaCode();
   const form = useForm({
+    mode: 'onSubmit',
     defaultValues: {
       areaCode: '',
       churchCode: '',
@@ -25,9 +26,19 @@ const ChurchCodeSave = () => {
       comment: '',
     },
   });
+  const toList = (isRead) => {
+    props.upperFn(isRead);
+  };
+  const { mutateSaveChurch, saveChurchLoading } = useSaveChurchCode();
   const { register, handleSubmit, formState } = form;
   const onSubmit = (data) => {
-    console.log(data);
+    const reqData = { ...data, userId: 'admin' };
+    console.log(reqData);
+    mutateSaveChurch(reqData, {
+      onSuccess: () => {
+        toList(true);
+      },
+    });
   };
 
   const { errors } = formState;
