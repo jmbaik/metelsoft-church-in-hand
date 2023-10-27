@@ -43,12 +43,6 @@ const PastorList = () => {
       cellClassName: 'name-column--cell',
     },
     {
-      field: 'comment',
-      headerName: '설명',
-      flex: 1,
-      cellClassName: 'name-column--cell',
-    },
-    {
       field: 'pic',
       headerName: 'Picture',
       flex: 1,
@@ -72,6 +66,7 @@ const PastorList = () => {
   }
 
   const { isLoading, data, isError, error } = useFetchPastor();
+  console.log(data);
   if (isLoading) return <h3>Loading...</h3>;
   if (isError) return <h3>{error.message}</h3>;
 

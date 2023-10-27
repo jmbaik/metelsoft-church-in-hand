@@ -124,7 +124,7 @@ const MSidebar = () => {
             />
             <MSideSubTitle title="목사님 말씀" />
             <Item
-              title="Youtube 영상"
+              title="목사님 Youtube영상"
               to="/youtube-pastor"
               icon={<SubscriptionsOutlinedIcon />}
               selected={selected}
