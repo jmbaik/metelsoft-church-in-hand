@@ -1,9 +1,4 @@
-import {
-  useQuery,
-  QueryClient,
-  useQueryClient,
-  useMutation,
-} from '@tanstack/react-query';
+import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import apiFetch from '../bundle/axios';
 
 export const areaCodeApi = async () => {
@@ -60,4 +55,43 @@ export const useSaveChurchCode = () => {
       },
     });
   return { mutateSaveChurch, saveChurchLoading };
+};
+
+export const useFetchPastor = () => {
+  const { isLoading, data, isError, error } = useQuery({
+    queryKey: ['common-code/pastor'],
+    queryFn: async () => {
+      const response = await apiFetch.get('/common-code/pastor');
+      return response.data.result;
+    },
+    keepPreviousData: true,
+  });
+  return { data, isLoading, isError, error };
+};
+
+export const useSavePastor = () => {
+  const QueryClient = useQueryClient();
+  const { mutate: mutateSavePastor, isLoading: savePastorLoading } =
+    useMutation({
+      mutationFn: async (params) => {
+        console.log('pastor useSavePastor', params);
+        let response = {};
+        if (params?.pastorCode) {
+          response = await apiFetch.put('/common-code/pastor', params);
+          return response.data.result;
+        } else {
+          response = await apiFetch.post('/common-code/pastor', params);
+          return response.data.result;
+        }
+      },
+      onSuccess: () => {
+        QueryClient.invalidateQueries({
+          queryKey: ['common-code/pastor'],
+        });
+      },
+      onError: (err) => {
+        console.log(err);
+      },
+    });
+  return { mutateSavePastor, savePastorLoading };
 };

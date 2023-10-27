@@ -1,11 +1,6 @@
 import {
   Box,
   Button,
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  MenuItem,
-  Select,
   TextField,
   Typography,
   useMediaQuery,
@@ -13,11 +8,13 @@ import {
 import React from 'react';
 import { useFetchAreaCode, useSaveChurchCode } from '../../api/commonCodeApi';
 import { useForm } from 'react-hook-form';
+import { useEffect } from 'react';
+import MSelect from '../../components/MSelect';
 
 const ChurchCodeSave = (props) => {
   const isNonMobile = useMediaQuery('(min-width:600px');
   const { data: areaCodeList } = useFetchAreaCode();
-  const form = useForm({
+  const { register, handleSubmit, setValue, formState } = useForm({
     mode: 'onSubmit',
     defaultValues: {
       areaCode: '',
@@ -26,22 +23,33 @@ const ChurchCodeSave = (props) => {
       comment: '',
     },
   });
-  const toList = (isRead) => {
-    props.upperFn(isRead);
+  const toList = (read) => {
+    props.upperFn(read);
   };
   const { mutateSaveChurch, saveChurchLoading } = useSaveChurchCode();
-  const { register, handleSubmit, formState } = form;
+
+  const { errors } = formState;
+
   const onSubmit = (data) => {
     const reqData = { ...data, userId: 'admin' };
     console.log(reqData);
     mutateSaveChurch(reqData, {
       onSuccess: () => {
-        toList(true);
+        toList('r');
       },
     });
   };
 
-  const { errors } = formState;
+  useEffect(() => {
+    if (props.crud === 'e') {
+      const _values = props.params;
+      for (const [key, value] of Object.entries(_values)) {
+        setValue(key, value);
+      }
+    }
+  }, [props.crud, props.params, setValue]);
+
+  if (saveChurchLoading) return <h3>save process Loading...</h3>;
   return (
     <Box>
       <Typography variant="h4" sx={{ mb: '20px' }}>
@@ -56,15 +64,27 @@ const ChurchCodeSave = (props) => {
             '& > div': { gridColumn: isNonMobile ? undefined : 'span 4' },
           }}
         >
-          <FormControl>
+          <MSelect
+            optionData={areaCodeList}
+            optionValue="aliasCode"
+            optionText="name"
+            register={register}
+            errors={errors}
+            name="areaCode"
+            label="지역코드"
+            errorText="지역코드를 반드시 선택하여야 합니다."
+            sxStyle={{ gridColumn: 'span 1' }}
+            isRequired={true}
+            defaultValue={props.params?.areaCode ?? ''}
+          />
+          {/* <FormControl>
             <InputLabel id="label-area-code">지역선택</InputLabel>
             <Select
               labelId="label-area-code"
               name="areaCode"
               fullWidth
               variant="filled"
-              label="Local Name"
-              defaultValue=""
+              defaultValue={props.params?.areaCode ?? ''}
               {...register('areaCode', {
                 required: '지역코드가 반드시 선택되어야 합니다.',
               })}
@@ -78,15 +98,18 @@ const ChurchCodeSave = (props) => {
                   </MenuItem>
                 ))}
             </Select>
-            <FormHelperText>{errors.areaCode?.message}</FormHelperText>
-          </FormControl>
+            <FormHelperText sx={{ color: '#db4f4a' }}>
+              {errors.areaCode?.message}
+            </FormHelperText>
+          </FormControl> */}
           <TextField
             fullWidth
             variant="filled"
             type="text"
-            label="교회 코드[읽기모드]"
+            label="교회 코드 [읽기 전용]"
             name="churchCode"
             sx={{ gridColumn: 'span 3' }}
+            {...register('churchCode')}
             disabled
           />
           <TextField

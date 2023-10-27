@@ -15,6 +15,7 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import AreacodeList from './AreacodeList';
 import ChurchCodeList from './ChurchCodeList';
+import PastorList from './PastorList';
 
 const CommonCode = () => {
   const theme = useTheme();
@@ -53,7 +54,9 @@ const CommonCode = () => {
             <TabPanel value="2">
               <ChurchCodeList />
             </TabPanel>
-            <TabPanel value="3"></TabPanel>
+            <TabPanel value="3">
+              <PastorList />
+            </TabPanel>
           </TabContext>
         </Box>
       </Box>

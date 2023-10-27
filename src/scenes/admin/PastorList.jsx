@@ -1,27 +1,44 @@
+import { Box, useTheme } from '@mui/material';
 import React from 'react';
-import { useFetchChurchCode } from '../../api/commonCodeApi';
-import MGrid from '../../components/MGrid';
-import { Box, Button, useTheme } from '@mui/material';
+import { tokens } from '../../theme';
+import { useState } from 'react';
+import { useFetchPastor } from '../../api/commonCodeApi';
 import MButton from '../../components/MButton';
 import AppRegistrationOutlinedIcon from '@mui/icons-material/AppRegistrationOutlined';
-import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
-import { useState } from 'react';
-import ChurchCodeSave from './ChurchCodeSave';
-import { tokens } from '../../theme';
+import MGrid from '../../components/MGrid';
+import PastorSave from './PastorSave';
 
-const ChurchCodeList = () => {
+const PastorList = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const columns = [
     {
+      field: 'pastorCode',
+      headerName: '코드',
+      flex: 1,
+      cellClassName: 'name-column--cell',
+    },
+    {
       field: 'churchCode',
-      headerName: '교회 코드',
+      headerName: '교회코드',
+      flex: 1,
+      cellClassName: 'name-column--cell',
+    },
+    {
+      field: 'churchName',
+      headerName: '교회명',
+      flex: 1,
+      cellClassName: 'name-column--cell',
+    },
+    {
+      field: 'grade',
+      headerName: 'grade',
       flex: 1,
       cellClassName: 'name-column--cell',
     },
     {
       field: 'name',
-      headerName: '교회명',
+      headerName: '이름',
       flex: 1,
       cellClassName: 'name-column--cell',
     },
@@ -37,19 +54,24 @@ const ChurchCodeList = () => {
       flex: 1,
       cellClassName: 'name-column--cell',
     },
+    {
+      field: 'updDt',
+      headerName: '최종수정',
+      flex: 1,
+      cellClassName: 'name-column--cell',
+    },
   ];
 
   const [crud, setCrud] = useState('r');
   const [editParams, setEditParams] = useState({});
-
   function doubleClicked(param) {
-    const params = { ...param, areaCode: param.churchCode.substring(0, 1) };
+    const params = { ...param };
     setEditParams(params);
     setCrud('e');
     console.log(params);
   }
 
-  const { isLoading, data, isError, error } = useFetchChurchCode();
+  const { isLoading, data, isError, error } = useFetchPastor();
   if (isLoading) return <h3>Loading...</h3>;
   if (isError) return <h3>{error.message}</h3>;
 
@@ -57,6 +79,7 @@ const ChurchCodeList = () => {
     if (read === 'r') setEditParams({});
     setCrud(read);
   };
+
   return (
     <>
       <Box display="flex" justifyContent="flex-end">
@@ -74,16 +97,16 @@ const ChurchCodeList = () => {
       {crud === 'r' && (
         <MGrid
           onRowDoubleClick={doubleClicked}
-          rowId="churchCode"
+          rowId="pastorCode"
           data={data}
           cols={columns}
         />
       )}
       {crud !== 'r' && (
-        <ChurchCodeSave upperFn={fnSub} params={editParams} crud={crud} />
+        <PastorSave upperFn={fnSub} params={editParams} crud={crud} />
       )}
     </>
   );
 };
 
-export default ChurchCodeList;
+export default PastorList;
