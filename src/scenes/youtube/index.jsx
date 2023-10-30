@@ -7,6 +7,8 @@ import { mockDataTeam } from '../../data/mockData';
 import { useNavigate } from 'react-router-dom';
 import MGrid from '../../components/MGrid';
 import { useFetchYoutubePastor } from '../../api/youtubeVideo';
+import MButton from '../../components/MButton';
+import AppRegistrationOutlinedIcon from '@mui/icons-material/AppRegistrationOutlined';
 
 const PastorYoutubeList = () => {
   const theme = useTheme();
@@ -22,6 +24,7 @@ const PastorYoutubeList = () => {
     {
       field: 'pastorCode',
       headerName: '목사코드',
+      hideable: false,
     },
     {
       field: 'pastorName',
@@ -41,6 +44,7 @@ const PastorYoutubeList = () => {
     {
       field: 'ovid',
       headerName: 'ovid',
+      hideable: true,
     },
     {
       field: 'originName',
@@ -63,6 +67,7 @@ const PastorYoutubeList = () => {
       flex: 1,
     },
     {
+      field: 'ie',
       headerName: '수정',
       flex: 1,
       renderCell: ({ row: { vid } }) => {
@@ -86,31 +91,36 @@ const PastorYoutubeList = () => {
     },
   ];
 
-  const initialState = {
-    columns: {
-      columnVisibilityMode: {
-        ovid: false,
-        pastorCode: false,
-      },
-    },
-  };
   const { isLoading, data, isError, error } = useFetchYoutubePastor({
     pastorCode: '',
     ovid: '',
   });
   console.log(data);
+  const columnVisibilityModel = {
+    pastorCode: false,
+    ovid: false,
+  };
   if (isLoading) return <h3>Loading...</h3>;
   if (isError) return <h3>{error.message}</h3>;
 
   return (
     <>
       <Box m="20px">
-        <MHeader title="Youtube 영상" subtitle="목사님 영상" />
+        <MHeader title="목사님 영상 (Youtube)" subtitle="목사님 영상 목록" />
+        <Box display="flex" justifyContent="flex-end" sx={{ mt: '10px' }}>
+          <MButton
+            onClick={() => {
+              navigate('/you-on');
+            }}
+          >
+            <AppRegistrationOutlinedIcon sx={{ mr: '10px' }} />
+          </MButton>
+        </Box>
         <MGrid
           rowId="vid"
           data={data}
           cols={columns}
-          initialState={initialState}
+          columnVisibilityModel={columnVisibilityModel}
         />
       </Box>
     </>

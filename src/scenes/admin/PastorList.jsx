@@ -1,6 +1,5 @@
 import { Box, useTheme } from '@mui/material';
 import React from 'react';
-import { tokens } from '../../theme';
 import { useState } from 'react';
 import { useFetchPastor } from '../../api/commonCodeApi';
 import MButton from '../../components/MButton';
@@ -9,8 +8,6 @@ import MGrid from '../../components/MGrid';
 import PastorSave from './PastorSave';
 
 const PastorList = () => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
   const columns = [
     {
       field: 'pastorCode',

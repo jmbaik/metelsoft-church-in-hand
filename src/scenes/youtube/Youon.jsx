@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Divider,
   Modal,
   TextField,
   Typography,
@@ -9,9 +10,26 @@ import {
 import React from 'react';
 import MHeader from '../../components/MHeader';
 import YouTube from 'react-youtube';
+import MButton from '../../components/MButton';
+import MAutoComplete from '../../components/MAutoComplete';
+import { useFetchPastor } from '../../api/commonCodeApi';
+import { useForm } from 'react-hook-form';
 
 const Youon = (props) => {
   const isNonMobile = useMediaQuery('(min-width:600px)');
+
+  const { data: pastorList } = useFetchPastor();
+
+  const { register, handleSubmit, setValue, formState, control } = useForm({
+    mode: 'onSubmit',
+    defaultValues: {
+      vid: '',
+      pastorCode: '',
+      title: '',
+      ovid: '',
+      youtubeid: '',
+    },
+  });
 
   const handleFormSubmit = (values) => {
     console.log(values);
@@ -30,16 +48,24 @@ const Youon = (props) => {
   };
   return (
     <Box m="20px">
-      <MHeader title="CREATE USER" subtitle="Create a New User Profile" />
+      <MHeader title="Youtube 등록" subtitle="[목사님 영상]" />
+      <Box display="flex" justifyContent="flex-end" sx={{ mt: '20px' }}>
+        <MButton>목록으로</MButton>
+      </Box>
       <form>
+        <Divider textAlign="left" sx={{ mt: '10px' }}>
+          목사님 선택
+        </Divider>
         <Box
           display="grid"
           gap="30px"
           gridTemplateColumns="repeat(4, minmax(0, 1fr))"
           sx={{
+            mt: '10px',
             '& > div': { gridColumn: isNonMobile ? undefined : 'span 4' },
           }}
         >
+          {/* <MAutoComplete /> */}
           <TextField
             fullWidth
             variant="filled"
