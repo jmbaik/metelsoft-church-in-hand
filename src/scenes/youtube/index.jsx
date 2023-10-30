@@ -1,49 +1,71 @@
-import { Box, Button, Typography, useTheme } from '@mui/material';
-import React, { useState } from 'react';
+import { Box, Button, useTheme } from '@mui/material';
+import React from 'react';
 import { tokens } from '../../theme';
-import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
-import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
-import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined';
 import MHeader from '../../components/MHeader';
 import { DataGrid } from '@mui/x-data-grid';
 import { mockDataTeam } from '../../data/mockData';
-import Youon from './Youon';
 import { useNavigate } from 'react-router-dom';
+import MGrid from '../../components/MGrid';
+import { useFetchYoutubePastor } from '../../api/youtubeVideo';
 
 const PastorYoutubeList = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
   const columns = [
-    { field: 'id', headerName: 'ID' },
     {
-      field: 'name',
-      headerName: 'Name',
+      field: 'vid',
+      headerName: 'vId',
       flex: 1,
       cellClassName: 'name-column--cell',
     },
     {
-      field: 'age',
-      headerName: 'Age',
-      type: 'number',
-      headerAlign: 'left',
-      align: 'left',
+      field: 'pastorCode',
+      headerName: '목사코드',
     },
     {
-      field: 'phone',
-      headerName: 'Phone Number',
+      field: 'pastorName',
+      headerName: '목사',
       flex: 1,
     },
     {
-      field: 'email',
-      headerName: 'Email',
+      field: 'title',
+      headerName: '제목',
       flex: 1,
     },
     {
-      field: 'accessLevel',
-      headerName: 'Access Level',
+      field: 'createYmd',
+      headerName: '생성일',
       flex: 1,
-      renderCell: ({ row: { id, access } }) => {
+    },
+    {
+      field: 'ovid',
+      headerName: 'ovid',
+    },
+    {
+      field: 'originName',
+      headerName: '출처',
+      flex: 1,
+    },
+    {
+      field: 'youtubeId',
+      headerName: 'Youbube id',
+      flex: 1,
+    },
+    {
+      field: 'userId',
+      headerName: '생성자',
+      flex: 1,
+    },
+    {
+      field: 'updDt',
+      headerName: '최종수정일',
+      flex: 1,
+    },
+    {
+      headerName: '수정',
+      flex: 1,
+      renderCell: ({ row: { vid } }) => {
         return (
           <>
             <Button
@@ -53,10 +75,10 @@ const PastorYoutubeList = () => {
                 color: colors.blueAccent[200],
               }}
               onClick={() => {
-                navigate('/you-on');
+                navigate(`/you-on/${vid}`);
               }}
             >
-              {access}
+              수정
             </Button>
           </>
         );
@@ -64,49 +86,32 @@ const PastorYoutubeList = () => {
     },
   ];
 
+  const initialState = {
+    columns: {
+      columnVisibilityMode: {
+        ovid: false,
+        pastorCode: false,
+      },
+    },
+  };
+  const { isLoading, data, isError, error } = useFetchYoutubePastor({
+    pastorCode: '',
+    ovid: '',
+  });
+  console.log(data);
+  if (isLoading) return <h3>Loading...</h3>;
+  if (isError) return <h3>{error.message}</h3>;
+
   return (
     <>
       <Box m="20px">
         <MHeader title="Youtube 영상" subtitle="목사님 영상" />
-        <Box
-          m="40px 0 0 0"
-          height="75vh"
-          sx={{
-            '& .MuiDataGrid-root': {
-              border: 'none',
-            },
-            '& .MuiDataGrid-cell': {
-              borderBottom: 'none',
-            },
-            '& .name-column--cell': {
-              color: colors.greenAccent[300],
-            },
-            '& .MuiDataGrid-columnHeaders': {
-              backgroundColor: colors.blueAccent[700],
-              borderBottom: 'none',
-            },
-            '& .MuiDataGrid-virtualScroller': {
-              backgroundColor: colors.primary[400],
-            },
-            '& .MuiDataGrid-footerContainer': {
-              borderTop: 'none',
-              backgroundColor: colors.blueAccent[700],
-            },
-            '& .MuiCheckbox-root': {
-              color: `${colors.greenAccent[200]} !important`,
-            },
-          }}
-        >
-          <DataGrid
-            checkboxSelection
-            rows={mockDataTeam}
-            columns={columns}
-            initialState={{
-              pagination: { paginationModel: { pageSize: 10 } },
-            }}
-            pageSizeOptions={[5, 10, 25]}
-          />
-        </Box>
+        <MGrid
+          rowId="vid"
+          data={data}
+          cols={columns}
+          initialState={initialState}
+        />
       </Box>
     </>
   );

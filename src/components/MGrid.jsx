@@ -44,6 +44,7 @@ const MGrid = (props) => {
         onRowDoubleClick={(param) => props.onRowDoubleClick(param.row)}
         getRowId={(row) => row[props.rowId]}
         rows={props.data ?? []}
+        initialState={props.initialState}
         columns={props.cols}
       />
     </Box>
