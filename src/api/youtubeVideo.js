@@ -3,7 +3,7 @@ import apiFetch from '../bundle/axios';
 
 export const useFetchYoutubePastor = (params) => {
   const { isLoading, data, isError, error } = useQuery({
-    queryKey: ['youtube/pastor'],
+    queryKey: ['youtube/pastor', params],
     queryFn: async (params) => {
       const response = await apiFetch.get('/youtube/pastor', params);
       return response.data.result;
@@ -22,7 +22,7 @@ export const useSaveYoutubePastor = () => {
     mutationFn: async (params) => {
       console.log('youtube pastor useSaveYoutubePastor', params);
       let response = {};
-      if (params?.pastorCode) {
+      if (params.ie === 'e') {
         response = await apiFetch.put('/youtube/pastor', params);
         return response.data.result;
       } else {
@@ -32,7 +32,7 @@ export const useSaveYoutubePastor = () => {
     },
     onSuccess: () => {
       QueryClient.invalidateQueries({
-        queryKey: ['/youtube/pastor'],
+        queryKey: ['youtube/pastor'],
       });
     },
     onError: (err) => {
@@ -43,24 +43,20 @@ export const useSaveYoutubePastor = () => {
 };
 
 export const useFetchOriginVid = (params) => {
-  const {
-    isLoading: isLoadingOriginVid,
-    data: dataOriginVid,
-    isError: isErrorOriginVid,
-    error: errorOriginVid,
-  } = useQuery({
-    queryKey: ['youtube/origin-vid'],
+  const { isLoading, data, isError, error } = useQuery({
+    queryKey: ['youtube/origin-vid', params],
     queryFn: async (params) => {
-      const response = await apiFetch.get('youtube/origin-vid', params);
+      const response = await apiFetch.get('/youtube/origin-vid', params);
+      console.log(response);
       return response.data.result;
     },
     keepPreviousData: true,
   });
   return {
-    dataOriginVid,
-    isLoadingOriginVid,
-    isErrorOriginVid,
-    errorOriginVid,
+    data,
+    isLoading,
+    isError,
+    error,
   };
 };
 
@@ -69,9 +65,9 @@ export const useSaveOriginVid = () => {
   const { mutate: mutateSaveOriginVid, isLoading: saveOriginVidLoading } =
     useMutation({
       mutationFn: async (params) => {
-        console.log('OriginVid useSaveOriginVid', params);
+        console.log('OriginVid useSaveOriginVid');
         let response = {};
-        if (params?.pastorCode) {
+        if (params.ie === 'e') {
           response = await apiFetch.put('/youtube/origin-vid', params);
           return response.data.result;
         } else {
@@ -81,7 +77,7 @@ export const useSaveOriginVid = () => {
       },
       onSuccess: () => {
         QueryClient.invalidateQueries({
-          queryKey: ['/youtube/origin-vid'],
+          queryKey: ['youtube/origin-vid'],
         });
       },
       onError: (err) => {
