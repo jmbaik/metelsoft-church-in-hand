@@ -22,6 +22,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { tokens } from '../../theme';
+import OriginVidSave from './OriginVidSave';
 
 const Youon = (props) => {
   const isNonMobile = useMediaQuery('(min-width:600px)');
@@ -123,72 +124,8 @@ const Youon = (props) => {
             isRequired={true}
             defaultValue={props.params?.pastorCode ?? ''}
           />
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            sx={{ gridColumn: 'span 2' }}
-          >
-            <Button
-              sx={{
-                color: colors.grey[100],
-                fontSize: '14px',
-                fontWeight: 'bold',
-              }}
-              color="secondary"
-              variant="outlined"
-              onClick={() => {}}
-            >
-              출처 등록
-            </Button>
 
-            <Button
-              size="small"
-              sx={{
-                fontSize: '14px',
-                fontWeight: 'bold',
-              }}
-              color="secondary"
-              variant="filled"
-              onClick={() => {}}
-            >
-              저장
-            </Button>
-          </Box>
-          <TextField
-            fullWidth
-            variant="filled"
-            type="text"
-            label="출처이름"
-            name="originName"
-            sx={{ gridColumn: 'span 2' }}
-          />
-          <TextField
-            fullWidth
-            variant="filled"
-            type="text"
-            label="Url"
-            name="originName"
-            sx={{ gridColumn: 'span 2' }}
-          />
-          <TextField
-            fullWidth
-            variant="filled"
-            type="text"
-            label="출처 제목"
-            name="originTitle"
-            sx={{ gridColumn: 'span 4' }}
-          />
-          <TextField
-            fullWidth
-            variant="filled"
-            type="text"
-            label="설명"
-            name="originComment"
-            multiline
-            rows={3}
-            sx={{ gridColumn: 'span 4' }}
-            {...register('comment')}
-          />
+          <OriginVidSave />
           <Divider textAlign="left" sx={{ mt: '10px', gridColumn: 'span 4' }}>
             정보 입력
           </Divider>
@@ -207,6 +144,17 @@ const Youon = (props) => {
             label="Youtube ID"
             name="youtubeId"
             sx={{ gridColumn: 'span 2' }}
+          />
+          <TextField
+            fullWidth
+            variant="filled"
+            type="text"
+            label="설명"
+            name="comment"
+            multiline
+            rows={3}
+            sx={{ gridColumn: 'span 4' }}
+            {...register('comment')}
           />
         </Box>
         <Box display="flex" justifyContent="end" mt="20px">
