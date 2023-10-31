@@ -20,7 +20,7 @@ const MAutoComplete = ({
 }) => {
   return (
     <Controller
-      name="churchCode"
+      name={optionValue}
       rules={{
         required: isRequired,
       }}
