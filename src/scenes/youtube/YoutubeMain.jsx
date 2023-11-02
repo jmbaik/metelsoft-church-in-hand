@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import OriginVidList from './OriginVidList';
 import YoutubePastorList from './YoutubePastorList';
+import ChannelPastorRegister from './ChannelPastorRegister';
 
 const YoutubeMain = () => {
   // const isNonMobile = useMediaQuery('(min-width:600px)');
@@ -35,13 +36,17 @@ const YoutubeMain = () => {
                 aria-label="lab API tabs example"
               >
                 <Tab label="출처 등록" value="1" />
-                <Tab label="목사님 영상 등록" value="2" />
+                <Tab label="채널별 영상등록" value="2" />
+                <Tab label="목사님 영상 등록" value="3" />
               </TabList>
             </Box>
             <TabPanel value="1">
               <OriginVidList />
             </TabPanel>
             <TabPanel value="2">
+              <ChannelPastorRegister />
+            </TabPanel>
+            <TabPanel value="3">
               <YoutubePastorList />
             </TabPanel>
           </TabContext>
