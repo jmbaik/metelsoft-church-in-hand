@@ -23,12 +23,16 @@ const OriginVidList = () => {
     {
       field: 'originTitle',
       headerName: '제목',
-      flex: 1,
+      flex: 2,
       cellClassName: 'name-column--cell',
     },
     {
       field: 'channelUrl',
-      headerName: '채널 Url',
+      headerName: '채널 Id',
+    },
+    {
+      field: 'channelId',
+      headerName: '채널 Id',
       flex: 1,
       cellClassName: 'name-column--cell',
     },
@@ -60,6 +64,10 @@ const OriginVidList = () => {
     originTitle: '',
   });
 
+  const columnVisibilityModel = {
+    channelUrl: false,
+  };
+
   console.log(data);
   if (isLoading) return <h3>Loading...</h3>;
   if (isError) return <h3>{error.message}</h3>;
@@ -88,6 +96,7 @@ const OriginVidList = () => {
           rowId="ovid"
           data={data}
           cols={columns}
+          columnVisibilityModel={columnVisibilityModel}
         />
       )}
       {crud !== 'r' && (
