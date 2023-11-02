@@ -18,6 +18,7 @@ const OriginVidSave = (props) => {
       ovid: '',
       originName: '',
       channelUrl: '',
+      channelId: '',
       originTitle: '',
       originComment: '',
     },
@@ -86,19 +87,31 @@ const OriginVidSave = (props) => {
             {...register('ovid')}
             disabled
           />
-
           <TextField
             fullWidth
             variant="filled"
             type="text"
             label="Url"
             name="channelUrl"
-            sx={{ gridColumn: 'span 4' }}
+            sx={{ gridColumn: 'span 2' }}
             {...register('channelUrl', {
               required: '채널 Url을 전체 복사하여 붙여주세요',
             })}
             error={!!errors?.channelUrl}
             helperText={errors.channelUrl?.message}
+          />
+          <TextField
+            fullWidth
+            variant="filled"
+            type="text"
+            label="출처 Id"
+            name="channelId"
+            sx={{ gridColumn: 'span 2' }}
+            {...register('channelId', {
+              required: '채널 Id를 입력하세요',
+            })}
+            error={!!errors?.channelId}
+            helperText={errors.channelId?.message}
           />
           <TextField
             fullWidth

@@ -21,7 +21,7 @@ const YoutubeMain = () => {
   };
   return (
     <Box m="20px">
-      <MHeader title="Youtube 영상" subtitle="목사님 영상 등록" />
+      <MHeader title="Youtube 영상 [목사님 영상]" />
       <Box m="20px 0 0 0">
         <Box sx={{ width: '100%', typography: 'body1' }}>
           <TabContext value={value}>
