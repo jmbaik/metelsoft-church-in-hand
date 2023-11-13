@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import MButton from '../../components/MButton';
 import MGrid from '../../components/MGrid';
@@ -92,7 +92,7 @@ const YoutubePastorList = () => {
   if (isError) return <h3>{error.message}</h3>;
   return (
     <>
-      <Box display="flex" justifyContent="flex-end">
+      {/* <Box display="flex" justifyContent="flex-end">
         <MButton
           onClick={() => {
             let _crud = crud === 'r' ? 'i' : 'r';
@@ -103,6 +103,11 @@ const YoutubePastorList = () => {
           {crud === 'r' && <AppRegistrationOutlinedIcon sx={{ mr: '10px' }} />}
           {crud !== 'r' && '목록으로'}
         </MButton>
+      </Box> */}
+      <Box display="flex" justifyContent="flex-end">
+        <Typography>
+          * 찾기 기능은 그리드의 필터링 기능을 이용하세요.{' '}
+        </Typography>
       </Box>
       {crud === 'r' && (
         <MGrid
