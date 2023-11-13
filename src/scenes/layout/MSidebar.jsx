@@ -11,6 +11,7 @@ import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettin
 import { ProSidebar, Menu, SubMenu, MenuItem } from 'react-pro-sidebar';
 import 'react-pro-sidebar/dist/css/styles.css';
 import { MSideSubTitle } from '../../components/MSideComp';
+import Image from 'mui-image';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -71,9 +72,10 @@ const MSidebar = () => {
                 alignItems="center"
                 ml="15px"
               >
-                <Typography variant="h3" color={colors.grey[100]}>
+                {/* <Typography variant="h3" color={colors.grey[100]}>
                   내손안의 교회
-                </Typography>
+                </Typography> */}
+                <Image src="../../assets/cihw-logo150.png" width={150} />
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                   <MenuIcon />
                 </IconButton>

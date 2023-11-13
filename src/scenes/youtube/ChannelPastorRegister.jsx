@@ -113,7 +113,7 @@ const ChannelPastorRegister = () => {
                 fontWeight: 'bold',
                 width: '30px',
               }}
-              onClick={searchChannel}
+              onClick={() => {}}
             >
               조회
             </Button>
