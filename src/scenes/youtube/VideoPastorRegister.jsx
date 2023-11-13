@@ -21,7 +21,6 @@ export const VideoPastorRegister = () => {
    * id : youtubeId
    * snippet.channelId
    * snippet.channelTitle
-   * snippet.channelId
    * snippet.title
    * snippet.description
    * snippet.thumbnails.default.url
