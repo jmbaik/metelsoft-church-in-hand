@@ -4,6 +4,7 @@ import {
   Button,
   Divider,
   FormControl,
+  MenuItem,
   TextField,
   Typography,
   useMediaQuery,
@@ -15,6 +16,7 @@ import { useFetchPastor } from '../../api/commonCodeApi';
 import { useFetchOriginVid } from '../../api/youtubeVideo';
 import { useForm } from 'react-hook-form';
 import { useFetchYoutubeSearchByVid } from '../../api/youtubeDataApi';
+import { MFormBox } from '../../components/MFormBox';
 
 export const VideoPastorRegister = () => {
   /***
@@ -41,13 +43,20 @@ export const VideoPastorRegister = () => {
   const { register, handleSubmit, setValue, getValues, formState } = useForm({
     mode: 'onSubmit',
     defaultValues: {
-      youtubeId: '',
-      ovid: '',
-      originName: '',
-      channelUrl: '',
+      vid: '',
+      pastorCode: '',
       channelId: '',
-      originTitle: '',
-      originComment: '',
+      title: '',
+      channelTitle: '',
+      thumbnailDefault: '',
+      thumbnailMedium: '',
+      thumbnailHigh: '',
+      grade: '',
+      sort: '',
+      createYmd: '',
+      description: '',
+      userId: '',
+      updDt: '',
     },
   });
   const { errors } = formState;
@@ -89,14 +98,7 @@ export const VideoPastorRegister = () => {
         </Typography>
       </Box>
       <Box component="section" sx={{ p: 2, border: '1px solid grey' }}>
-        <Box
-          display="grid"
-          gap="30px"
-          gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-          sx={{
-            '& > div': { gridColumn: isNonMobile ? undefined : 'span 4' },
-          }}
-        >
+        <MFormBox>
           <TextField
             fullWidth
             variant="filled"
@@ -126,7 +128,7 @@ export const VideoPastorRegister = () => {
               조회
             </Button>
           </Box>
-        </Box>
+        </MFormBox>
       </Box>
       <Divider
         textAlign="left"
@@ -136,15 +138,8 @@ export const VideoPastorRegister = () => {
       </Divider>
       <Box>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
-          <Box
-            display="grid"
-            gap="30px"
-            gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-            sx={{
-              '& > div': { gridColumn: isNonMobile ? undefined : 'span 4' },
-            }}
-          >
-            <FormControl sx={{ gridColumn: 'span 2' }}>
+          <MFormBox>
+            <FormControl sx={{ gridColumn: 'span 4' }}>
               <Autocomplete
                 filterSelectedOptions
                 disableClearable
@@ -163,101 +158,150 @@ export const VideoPastorRegister = () => {
                 size="small"
               />
             </FormControl>
-            <FormControl sx={{ gridColumn: 'span 2' }}>
-              <Autocomplete
-                filterSelectedOptions
-                disableClearable
-                id="combo-box-channel"
-                options={channelData ?? []}
-                getOptionLabel={(option) => `${option.originName}` ?? undefined}
-                renderInput={(params) => (
-                  <TextField {...params} label="출처 선택" variant="filled" />
-                )}
-                onChange={(e, newVal, reason) => {
-                  newVal &&
-                    setFormData({
-                      ...formData,
-                      ovid: newVal.ovid,
-                      channelId: newVal.channelId,
-                    });
-                }}
-                size="small"
-              />
-            </FormControl>
+            <TextField
+              select
+              fullWidth
+              variant="filled"
+              sx={{ gridColumn: 'span 2' }}
+              label="grade"
+              defaultValue=""
+              inputProps={register('grade', {
+                required: 'Grade를 반드시 선택하여 주세요',
+              })}
+              error={!!errors?.grade}
+              helperText={errors.grade?.message}
+            >
+              <MenuItem key="S" value="S">
+                최우선
+              </MenuItem>
+              <MenuItem key="H" value="H">
+                높음
+              </MenuItem>
+              <MenuItem key="M" value="M">
+                중간
+              </MenuItem>
+              <MenuItem key="L" value="L">
+                낮음
+              </MenuItem>
+            </TextField>
             <TextField
               fullWidth
               variant="filled"
-              type="text"
-              label="출처이름"
-              name="originName"
+              type="number"
+              label="정렬 순위"
+              name="sort"
               sx={{ gridColumn: 'span 2' }}
-              {...register('originName', {
-                required: '출처 이름을 반드시 입력하세요',
+              inputProps={{ inputMode: 'numeric' }}
+              {...register('sort', {
+                required: '정렬 순위를 반드시 입력하세요',
               })}
-              error={!!errors?.originName}
-              helperText={errors.originName?.message}
+              error={!!errors?.sort}
+              helperText={errors.sort?.message}
             />
             <TextField
               fullWidth
               variant="filled"
               type="text"
-              label="출처코드 [읽기 전용]"
-              name="ovid"
+              label="vid"
+              name="vid"
               sx={{ gridColumn: 'span 2' }}
-              {...register('ovid')}
+              {...register('vid', { required: 'vid 필수 항목' })}
+              error={!!errors?.vid}
+              helperText={errors.vid?.message}
               disabled
             />
             <TextField
               fullWidth
               variant="filled"
               type="text"
-              label="Url"
-              name="channelUrl"
-              sx={{ gridColumn: 'span 2' }}
-              {...register('channelUrl', {
-                required: '채널 Url을 전체 복사하여 붙여주세요',
-              })}
-              error={!!errors?.channelUrl}
-              helperText={errors.channelUrl?.message}
-            />
-            <TextField
-              fullWidth
-              variant="filled"
-              type="text"
-              label="출처 Id"
+              label="channel Id"
               name="channelId"
               sx={{ gridColumn: 'span 2' }}
-              {...register('channelId', {
-                required: '채널 Id를 입력하세요',
-              })}
+              {...register('channelId', { required: 'channelId 필수 항목' })}
               error={!!errors?.channelId}
               helperText={errors.channelId?.message}
+              disabled
             />
             <TextField
               fullWidth
               variant="filled"
               type="text"
-              label="출처 제목"
-              name="originTitle"
+              label="Channel 제목"
+              name="channelTitle"
               sx={{ gridColumn: 'span 4' }}
-              {...register('originTitle', {
-                required: '출처 제목을 입력하여 주세요',
+              {...register('channelTitle', {
+                required: 'channelTitle 필수 항목',
               })}
-              error={!!errors?.originTitle}
-              helperText={errors.originTitle?.message}
+              error={!!errors?.channelTitle}
+              helperText={errors.channelTitle?.message}
+              disabled
             />
             <TextField
               fullWidth
               variant="filled"
               type="text"
-              label="출처 설명"
-              name="originComment"
+              label="Title"
+              name="title"
+              sx={{ gridColumn: 'span 4' }}
+              {...register('title', { required: 'title 필수 항목' })}
+              error={!!errors?.title}
+              helperText={errors.title?.message}
+              disabled
+            />
+            <TextField
+              fullWidth
+              variant="filled"
+              type="text"
+              label="Thumbnail Default"
+              name="thumbnailDefault"
+              sx={{ gridColumn: 'span 4' }}
+              {...register('thumbnailDefault', {
+                required: 'thumbnailDefault 필수 항목',
+              })}
+              error={!!errors?.thumbnailDefault}
+              helperText={errors.thumbnailDefault?.message}
+              disabled
+            />
+            <TextField
+              fullWidth
+              variant="filled"
+              type="text"
+              label="Thumbnail Medium"
+              name="thumbnailMedium"
+              sx={{ gridColumn: 'span 4' }}
+              {...register('thumbnailMedium', {
+                required: 'thumbnailMedium 필수 항목',
+              })}
+              error={!!errors?.thumbnailMedium}
+              helperText={errors.thumbnailMedium?.message}
+              disabled
+            />
+            <TextField
+              fullWidth
+              variant="filled"
+              type="text"
+              label="Thumbnail High"
+              name="thumbnailHigh"
+              sx={{ gridColumn: 'span 4' }}
+              {...register('thumbnailHigh', {
+                required: 'thumbnailHigh 필수 항목',
+              })}
+              error={!!errors?.thumbnailHigh}
+              helperText={errors.thumbnailHigh?.message}
+              disabled
+            />
+            <TextField
+              fullWidth
+              variant="filled"
+              type="text"
+              label="설명"
+              name="description"
               multiline
               rows={3}
               sx={{ gridColumn: 'span 4' }}
-              {...register('originComment')}
+              {...register('description')}
             />
-          </Box>
+          </MFormBox>
           <Box display="flex" justifyContent="end" mt="20px">
             <Button type="submit" color="secondary" variant="contained">
               저장

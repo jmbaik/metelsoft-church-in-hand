@@ -36,7 +36,7 @@ const YoutubeMain = () => {
                 onChange={handleChange}
                 aria-label="lab API tabs example"
               >
-                <Tab label="출처 등록" value="1" />
+                <Tab label="채널 등록" value="1" />
                 <Tab label="영상 등록" value="2" />
                 <Tab label="목사님 영상 목록" value="3" />
               </TabList>

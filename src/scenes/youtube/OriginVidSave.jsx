@@ -15,12 +15,9 @@ const OriginVidSave = (props) => {
   const { register, handleSubmit, setValue, formState } = useForm({
     mode: 'onSubmit',
     defaultValues: {
-      ovid: '',
-      originName: '',
-      channelUrl: '',
       channelId: '',
-      originTitle: '',
-      originComment: '',
+      channelTitle: '',
+      channelDescription: '',
     },
   });
   const toList = (read) => {
@@ -53,7 +50,7 @@ const OriginVidSave = (props) => {
   return (
     <Box>
       <Typography variant="h4" sx={{ mb: '20px' }}>
-        출처 등록
+        채널 등록
       </Typography>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <Box
@@ -68,74 +65,35 @@ const OriginVidSave = (props) => {
             fullWidth
             variant="filled"
             type="text"
-            label="출처이름"
-            name="originName"
-            sx={{ gridColumn: 'span 2' }}
-            {...register('originName', {
-              required: '출처 이름을 반드시 입력하세요',
-            })}
-            error={!!errors?.originName}
-            helperText={errors.originName?.message}
-          />
-          <TextField
-            fullWidth
-            variant="filled"
-            type="text"
-            label="출처코드 [읽기 전용]"
-            name="ovid"
-            sx={{ gridColumn: 'span 2' }}
-            {...register('ovid')}
+            label="채널 ID [읽기 전용]"
+            name="channelId"
+            sx={{ gridColumn: 'span 4' }}
+            {...register('channelId')}
             disabled
           />
           <TextField
             fullWidth
             variant="filled"
             type="text"
-            label="Url"
-            name="channelUrl"
-            sx={{ gridColumn: 'span 2' }}
-            {...register('channelUrl', {
-              required: '채널 Url을 전체 복사하여 붙여주세요',
-            })}
-            error={!!errors?.channelUrl}
-            helperText={errors.channelUrl?.message}
-          />
-          <TextField
-            fullWidth
-            variant="filled"
-            type="text"
-            label="출처 Id"
-            name="channelId"
-            sx={{ gridColumn: 'span 2' }}
-            {...register('channelId', {
-              required: '채널 Id를 입력하세요',
-            })}
-            error={!!errors?.channelId}
-            helperText={errors.channelId?.message}
-          />
-          <TextField
-            fullWidth
-            variant="filled"
-            type="text"
-            label="출처 제목"
-            name="originTitle"
+            label="채널 Title"
+            name="channelTitle"
             sx={{ gridColumn: 'span 4' }}
-            {...register('originTitle', {
-              required: '출처 제목을 입력하여 주세요',
+            {...register('channelTitle', {
+              required: '채널 Title 반드시 입력하세요',
             })}
-            error={!!errors?.originTitle}
-            helperText={errors.originTitle?.message}
+            error={!!errors?.channelTitle}
+            helperText={errors.channelTitle?.message}
           />
           <TextField
             fullWidth
             variant="filled"
             type="text"
-            label="출처 설명"
-            name="originComment"
+            label="채널 설명"
+            name="channelDescription"
             multiline
             rows={3}
             sx={{ gridColumn: 'span 4' }}
-            {...register('originComment')}
+            {...register('channelDescription')}
           />
         </Box>
         <Box display="flex" justifyContent="end" mt="20px">

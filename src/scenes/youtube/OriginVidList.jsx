@@ -9,35 +9,19 @@ import OriginVidSave from './OriginVidSave';
 const OriginVidList = () => {
   const columns = [
     {
-      field: 'ovid',
-      headerName: '출처 코드',
+      field: 'channelId',
+      headerName: '채널 ID',
       flex: 1,
       cellClassName: 'name-column--cell',
     },
     {
-      field: 'originName',
-      headerName: '출처명',
-      flex: 1,
-      cellClassName: 'name-column--cell',
-    },
-    {
-      field: 'originTitle',
+      field: 'channelTitle',
       headerName: '제목',
       flex: 2,
       cellClassName: 'name-column--cell',
     },
     {
-      field: 'channelUrl',
-      headerName: '채널 Id',
-    },
-    {
-      field: 'channelId',
-      headerName: '채널 Id',
-      flex: 1,
-      cellClassName: 'name-column--cell',
-    },
-    {
-      field: 'comment',
+      field: 'description',
       headerName: '설명',
       flex: 1,
       cellClassName: 'name-column--cell',
@@ -60,13 +44,9 @@ const OriginVidList = () => {
   }
 
   const { isLoading, data, isError, error } = useFetchOriginVid({
-    originName: '',
-    originTitle: '',
+    channelTitle: '',
+    channelDescription: '',
   });
-
-  const columnVisibilityModel = {
-    channelUrl: false,
-  };
 
   console.log(data);
   if (isLoading) return <h3>Loading...</h3>;
@@ -93,10 +73,9 @@ const OriginVidList = () => {
       {crud === 'r' && (
         <MGrid
           onRowDoubleClick={doubleClicked}
-          rowId="ovid"
+          rowId="channelId"
           data={data}
           cols={columns}
-          columnVisibilityModel={columnVisibilityModel}
         />
       )}
       {crud !== 'r' && (
