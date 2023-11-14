@@ -27,6 +27,12 @@ const OriginVidList = () => {
       cellClassName: 'name-column--cell',
     },
     {
+      field: 'userId',
+      headerName: '생성자',
+      flex: 1,
+      cellClassName: 'name-column--cell',
+    },
+    {
       field: 'updDt',
       headerName: '최종수정',
       flex: 1,

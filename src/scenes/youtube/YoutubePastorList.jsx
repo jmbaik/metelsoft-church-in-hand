@@ -5,9 +5,28 @@ import MGrid from '../../components/MGrid';
 import { useFetchYoutubePastor } from '../../api/youtubeVideo';
 import AppRegistrationOutlinedIcon from '@mui/icons-material/AppRegistrationOutlined';
 import YoutubePastorSave from './YoutubePastorSave';
+import Image from 'mui-image';
 
 const YoutubePastorList = () => {
   const columns = [
+    {
+      field: 'thumbnailDefault',
+      headerName: 'Thumbnail',
+      flex: 1,
+      renderCell: ({ row: { thumbnailDefault } }) => {
+        return (
+          <Box
+            m="0 auto"
+            p="5px"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Image src={thumbnailDefault} width={150} />
+          </Box>
+        );
+      },
+    },
     {
       field: 'vid',
       headerName: 'VID',
@@ -27,7 +46,7 @@ const YoutubePastorList = () => {
     {
       field: 'title',
       headerName: '제목',
-      flex: 2,
+      flex: 3,
       cellClassName: 'name-column--cell',
     },
     {
@@ -37,18 +56,14 @@ const YoutubePastorList = () => {
       cellClassName: 'name-column--cell',
     },
     {
-      field: 'ovid',
-      headerName: 'ovid',
-    },
-    {
-      field: 'originName',
-      headerName: '출처',
+      field: 'channelId',
+      headerName: 'channel ID',
       flex: 1,
       cellClassName: 'name-column--cell',
     },
     {
-      field: 'youtubeId',
-      headerName: 'Youbube id',
+      field: 'channelTitle',
+      headerName: '출처',
       flex: 1,
       cellClassName: 'name-column--cell',
     },

@@ -7,58 +7,52 @@ import {
   MenuItem,
   TextField,
   Typography,
-  useMediaQuery,
   useTheme,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { tokens } from '../../theme';
 import { useFetchPastor } from '../../api/commonCodeApi';
-import { useFetchOriginVid } from '../../api/youtubeVideo';
 import { useForm } from 'react-hook-form';
-import { useFetchYoutubeSearchByVid } from '../../api/youtubeDataApi';
+import {
+  useFetchYoutubeSearchByVid,
+  useSaveYoutubeSearchByVid,
+} from '../../api/youtubeDataApi';
 import { MFormBox } from '../../components/MFormBox';
+import YouTube from 'react-youtube';
 
 export const VideoPastorRegister = () => {
-  /***
-   * id : youtubeId
-   * snippet.channelId
-   * snippet.channelTitle
-   * snippet.title
-   * snippet.description
-   * snippet.thumbnails.default.url
-   * snippet.thumbnails.medium.url
-   * snippet.thumbnails.high.url
-   */
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const isNonMobile = useMediaQuery('(min-width:600px');
   const { data: pastorData } = useFetchPastor();
-  const { data: channelData } = useFetchOriginVid();
+  console.log('pastorData', pastorData);
   const [formData, setFormData] = useState({
     youtubeId: '',
-    ovid: '',
+    channelId: '',
     pastorCode: '',
+    grade: '',
   });
 
-  const { register, handleSubmit, setValue, getValues, formState } = useForm({
-    mode: 'onSubmit',
-    defaultValues: {
-      vid: '',
-      pastorCode: '',
-      channelId: '',
-      title: '',
-      channelTitle: '',
-      thumbnailDefault: '',
-      thumbnailMedium: '',
-      thumbnailHigh: '',
-      grade: '',
-      sort: '',
-      createYmd: '',
-      description: '',
-      userId: '',
-      updDt: '',
-    },
-  });
+  const { register, handleSubmit, setValue, getValues, formState, reset } =
+    useForm({
+      mode: 'onSubmit',
+      defaultValues: {
+        youtubeId: '',
+        vid: '',
+        pastorCode: '',
+        channelId: '',
+        title: '',
+        channelTitle: '',
+        thumbnailDefault: '',
+        thumbnailMedium: '',
+        thumbnailHigh: '',
+        grade: '',
+        sort: '',
+        createYmd: '',
+        description: '',
+        userId: 'admin',
+        updDt: '',
+      },
+    });
   const { errors } = formState;
 
   const {
@@ -81,14 +75,105 @@ export const VideoPastorRegister = () => {
     }
   };
 
+  const { mutateSaveYoutubeSearch, isLoadingYoutubeSearch } =
+    useSaveYoutubeSearchByVid();
+
   const onSubmit = (data) => {
-    const reqData = { ...data, userId: 'admin' };
-    console.log('useSaveOriginVid : ', reqData);
+    const _pastorCode = formData?.pastorCode;
+    if (!_pastorCode.length) {
+      alert('목사님을 선택하지 않았습니다.');
+      return;
+    }
+    const reqData = {
+      ...data,
+      pastorCode: formData.pastorCode,
+      userId: 'admin',
+    };
+    console.log('useSaveYoutubeSearchByVid : ', reqData);
+    mutateSaveYoutubeSearch(reqData, {
+      onSuccess: () => {
+        alert('저장작업을 성공하였습니다.');
+        reset();
+        setFormData({
+          youtubeId: '',
+          channelId: '',
+          pastorCode: '',
+          grade: '',
+        });
+        setPastorSelected(initialPastorData);
+      },
+    });
   };
 
+  // youtube api 사용
+  const opts = {
+    height: '160',
+    width: '340',
+    playerVars: {
+      // https://developers.google.com/youtube/player_parameters
+      autoplay: 0,
+    },
+  };
+  const onPlayerReady = (e) => {
+    e.target.pauseVideo();
+  };
+  // -- youtube api end
+
+  const initialPastorData = {
+    pastorCode: '',
+    churchCode: '',
+    churchName: '',
+    grade: '',
+    name: '',
+    comment: '',
+    pic: '',
+    userId: '',
+    regId: '',
+    regDt: '',
+    updId: '',
+    updDt: '',
+  };
+  const [pastorSelected, setPastorSelected] = useState(initialPastorData);
+
   useEffect(() => {
+    /***
+     * id : youtubeId
+     * snippet.channelId
+     * snippet.channelTitle
+     * snippet.title
+     * snippet.description
+     * snippet.thumbnails.default.url
+     * snippet.thumbnails.medium.url
+     * snippet.thumbnails.high.url
+     * 
+     * vid: '',
+      pastorCode: '',
+      channelId: '',
+      title: '',
+      channelTitle: '',
+      thumbnailDefault: '',
+      thumbnailMedium: '',
+      thumbnailHigh: '',
+      grade: '',
+      sort: '',
+      createYmd: '',
+      description: '',
+      userId: 'admin',
+      updDt: '',
+     */
     console.log('searchData', youtubeSearchData);
-  }, [youtubeSearchData]);
+    if (youtubeSearchData?.length > 0) {
+      const data = youtubeSearchData[0];
+      setValue('vid', data.id);
+      setValue('channelId', data.snippet.channelId);
+      setValue('title', data.snippet.title);
+      setValue('channelTitle', data.snippet.channelTitle);
+      setValue('thumbnailDefault', data.snippet.thumbnails.default.url);
+      setValue('thumbnailMedium', data.snippet.thumbnails.medium.url);
+      setValue('thumbnailHigh', data.snippet.thumbnails.high.url);
+      setValue('description', data.snippet.description);
+    }
+  }, [youtubeSearchData, setValue]);
 
   return (
     <>
@@ -146,7 +231,9 @@ export const VideoPastorRegister = () => {
                 id="combo-box-pastor"
                 options={pastorData ?? []}
                 getOptionLabel={(option) =>
-                  `${option.name} [${option.churchName}]` ?? undefined
+                  option.name
+                    ? `${option.name} [${option.churchName}]` ?? ''
+                    : ''
                 }
                 renderInput={(params) => (
                   <TextField {...params} label="목사님 선택" variant="filled" />
@@ -154,8 +241,13 @@ export const VideoPastorRegister = () => {
                 onChange={(e, newVal, reason) => {
                   newVal &&
                     setFormData({ ...formData, pastorCode: newVal.pastorCode });
+                  setPastorSelected(newVal);
                 }}
                 size="small"
+                value={pastorSelected}
+                isOptionEqualToValue={(option, value) => {
+                  return option.pastorCode === value.pastorCode;
+                }}
               />
             </FormControl>
             <TextField
@@ -170,7 +262,14 @@ export const VideoPastorRegister = () => {
               })}
               error={!!errors?.grade}
               helperText={errors.grade?.message}
+              value={formData.grade}
+              onChange={(e) => {
+                setFormData({ ...formData, grade: e.target.value });
+              }}
             >
+              <MenuItem key="" value="">
+                -선택-
+              </MenuItem>
               <MenuItem key="S" value="S">
                 최우선
               </MenuItem>
@@ -308,6 +407,15 @@ export const VideoPastorRegister = () => {
             </Button>
           </Box>
         </form>
+        {youtubeSearchData?.length > 0 ? (
+          <Box>
+            <YouTube
+              videoId={youtubeSearchData[0].id}
+              opts={opts}
+              onReady={onPlayerReady}
+            />
+          </Box>
+        ) : null}
       </Box>
     </>
   );
