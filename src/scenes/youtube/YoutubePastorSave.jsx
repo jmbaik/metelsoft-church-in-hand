@@ -44,7 +44,7 @@ const YoutubePastorSave = (props) => {
 
   const onSubmit = (data) => {
     const reqData = { ...data, ie: props.crud ?? 'i', userId: 'admin' };
-    console.log(reqData);
+    // console.log(reqData);
     mutateSaveYoutubePastor(reqData, {
       onSuccess: () => {
         toList('r');

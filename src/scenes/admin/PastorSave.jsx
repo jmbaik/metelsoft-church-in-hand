@@ -56,6 +56,8 @@ const PastorSave = (props) => {
   const gradeList = [
     { val: '', text: '-선택' },
     { val: 'P', text: '목사' },
+    { val: 'E', text: '장로' },
+    { val: 'M', text: '선교사' },
   ];
 
   if (savePastorLoading) return <h3>save process Loading...</h3>;

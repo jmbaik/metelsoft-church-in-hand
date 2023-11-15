@@ -20,17 +20,21 @@ import {
 import { MFormBox } from '../../components/MFormBox';
 import YouTube from 'react-youtube';
 
-export const VideoPastorRegister = () => {
+export const VideoPastorRegister = (props) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { data: pastorData } = useFetchPastor();
-  console.log('pastorData', pastorData);
+  // console.log('pastorData', pastorData);
   const [formData, setFormData] = useState({
     youtubeId: '',
     channelId: '',
-    pastorCode: '',
-    grade: '',
+    pastorCode: props.crud === 'e' ? props.params.pastorCode : '',
+    grade: props.crud === 'e' ? props.params.grade : '',
   });
+
+  const toList = (read) => {
+    props.upperFn(read);
+  };
 
   const { register, handleSubmit, setValue, getValues, formState, reset } =
     useForm({
@@ -63,11 +67,10 @@ export const VideoPastorRegister = () => {
 
   const search = () => {
     const _youtubeId = getValues('youtubeId');
-    console.log('youtubeId', getValues('youtubeId'));
+    // console.log('youtubeId', getValues('youtubeId'));
     // https://youtu.be/p6s0bod-nY0
 
     if (_youtubeId?.length > 0) {
-      console.log('dfkasdjflja', 'refresh가 작동');
       setFormData({ ...formData, youtubeId: _youtubeId });
     }
     if (isSearchError) {
@@ -75,8 +78,7 @@ export const VideoPastorRegister = () => {
     }
   };
 
-  const { mutateSaveYoutubeSearch, isLoadingYoutubeSearch } =
-    useSaveYoutubeSearchByVid();
+  const { mutateSaveYoutubeSearch } = useSaveYoutubeSearchByVid();
 
   const onSubmit = (data) => {
     const _pastorCode = formData?.pastorCode;
@@ -101,6 +103,9 @@ export const VideoPastorRegister = () => {
           grade: '',
         });
         setPastorSelected(initialPastorData);
+        if (props.crud === 'e') {
+          toList('r');
+        }
       },
     });
   };
@@ -120,7 +125,7 @@ export const VideoPastorRegister = () => {
   // -- youtube api end
 
   const initialPastorData = {
-    pastorCode: '',
+    pastorCode: props.crud === 'e' ? props.params.pastorCode : '',
     churchCode: '',
     churchName: '',
     grade: '',
@@ -175,6 +180,26 @@ export const VideoPastorRegister = () => {
     }
   }, [youtubeSearchData, setValue]);
 
+  useEffect(() => {
+    if (props.crud === 'e') {
+      const _values = props.params;
+      for (const [key, value] of Object.entries(_values)) {
+        setValue(key, value);
+      }
+    }
+  }, [props.crud, props.params, setValue]);
+
+  useEffect(() => {
+    if (props.crud === 'e') {
+      const _item = pastorData?.find(
+        (item) => item.pastorCode === props?.params.pastorCode
+      );
+      // console.log('___item', _item);
+      setPastorSelected(_item);
+      setFormData({ ...formData, pastorCode: props?.params.pastorCode });
+    }
+  }, [pastorData, props?.params.pastorCode, props?.crud, formData]);
+
   return (
     <>
       <Box>
@@ -182,39 +207,42 @@ export const VideoPastorRegister = () => {
           Youtube 영상 등록 (목사님 영상)
         </Typography>
       </Box>
-      <Box component="section" sx={{ p: 2, border: '1px solid grey' }}>
-        <MFormBox>
-          <TextField
-            fullWidth
-            variant="filled"
-            type="text"
-            label="Video Id"
-            name="youtubeId"
-            sx={{ gridColumn: 'span 2' }}
-            {...register('youtubeId')}
-            error={!!errors?.youtubeId}
-            helperText={errors.youtubeId?.message}
-          />
-          <Box
-            display="flex"
-            justifyContent="flex-end"
-            sx={{ gridColumn: 'span 2' }}
-          >
-            <Button
-              sx={{
-                backgroundColor: colors.blueAccent[700],
-                color: colors.grey[100],
-                fontSize: '12px',
-                fontWeight: 'bold',
-                width: '30px',
-              }}
-              onClick={search}
+      {props.crud !== 'e' && (
+        <Box component="section" sx={{ p: 2, border: '1px solid grey' }}>
+          <MFormBox>
+            <TextField
+              fullWidth
+              variant="filled"
+              type="text"
+              label="Video Id"
+              name="youtubeId"
+              sx={{ gridColumn: 'span 2' }}
+              {...register('youtubeId')}
+              error={!!errors?.youtubeId}
+              helperText={errors.youtubeId?.message}
+            />
+            <Box
+              display="flex"
+              justifyContent="flex-end"
+              sx={{ gridColumn: 'span 2' }}
             >
-              조회
-            </Button>
-          </Box>
-        </MFormBox>
-      </Box>
+              <Button
+                sx={{
+                  backgroundColor: colors.blueAccent[700],
+                  color: colors.grey[100],
+                  fontSize: '12px',
+                  fontWeight: 'bold',
+                  width: '30px',
+                }}
+                onClick={search}
+              >
+                조회
+              </Button>
+            </Box>
+          </MFormBox>
+        </Box>
+      )}
+
       <Divider
         textAlign="left"
         sx={{ mt: '10px', mb: '10px', gridColumn: 'span 4' }}
@@ -246,7 +274,7 @@ export const VideoPastorRegister = () => {
                 size="small"
                 value={pastorSelected}
                 isOptionEqualToValue={(option, value) => {
-                  return option.pastorCode === value.pastorCode;
+                  return option?.pastorCode === value?.pastorCode;
                 }}
               />
             </FormControl>
@@ -399,9 +427,24 @@ export const VideoPastorRegister = () => {
               rows={3}
               sx={{ gridColumn: 'span 4' }}
               {...register('description')}
+              disabled
             />
           </MFormBox>
-          <Box display="flex" justifyContent="end" mt="20px">
+          <Box display="flex" justifyContent="end" mt="20px" gap={10}>
+            {props?.crud === 'e' && (
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: colors.blueAccent[700],
+                }}
+                onClick={() => {
+                  toList('r');
+                }}
+              >
+                목록으로
+              </Button>
+            )}
+
             <Button type="submit" color="secondary" variant="contained">
               저장
             </Button>

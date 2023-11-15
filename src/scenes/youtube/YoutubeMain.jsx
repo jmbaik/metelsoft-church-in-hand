@@ -16,7 +16,12 @@ const YoutubeMain = () => {
   // const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
   const [value, setValue] = useState('1');
-
+  const params = {
+    youtubeId: '',
+    channelId: '',
+    pastorCode: '',
+    grade: '',
+  };
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -45,7 +50,7 @@ const YoutubeMain = () => {
               <OriginVidList />
             </TabPanel>
             <TabPanel value="2">
-              <VideoPastorRegister />
+              <VideoPastorRegister crud={'i'} params={params} />
             </TabPanel>
             <TabPanel value="3">
               <YoutubePastorList />

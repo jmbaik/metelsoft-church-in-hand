@@ -6,6 +6,7 @@ import { useFetchYoutubePastor } from '../../api/youtubeVideo';
 import AppRegistrationOutlinedIcon from '@mui/icons-material/AppRegistrationOutlined';
 import YoutubePastorSave from './YoutubePastorSave';
 import Image from 'mui-image';
+import { VideoPastorRegister } from './VideoPastorRegister';
 
 const YoutubePastorList = () => {
   const columns = [
@@ -79,6 +80,14 @@ const YoutubePastorList = () => {
       flex: 1,
       cellClassName: 'name-column--cell',
     },
+    {
+      field: 'grade',
+      headerName: 'grade',
+    },
+    {
+      field: 'sort',
+      headerName: 'sort',
+    },
   ];
 
   const [crud, setCrud] = useState('r');
@@ -87,12 +96,13 @@ const YoutubePastorList = () => {
     const params = { ...param };
     setEditParams(params);
     setCrud('e');
-    console.log(params);
+    // console.log('pastor list double clicked :: ', params);
   }
 
   const columnVisibilityModel = {
     pastorCode: false,
-    ovid: false,
+    grade: false,
+    sort: false,
   };
 
   const fnSub = (read) => {
@@ -101,7 +111,7 @@ const YoutubePastorList = () => {
   };
 
   const { isLoading, data, isError, error } = useFetchYoutubePastor();
-  console.log(data);
+  // console.log(data);
 
   if (isLoading) return <h3>Loading...</h3>;
   if (isError) return <h3>{error.message}</h3>;
@@ -119,22 +129,24 @@ const YoutubePastorList = () => {
           {crud !== 'r' && '목록으로'}
         </MButton>
       </Box> */}
-      <Box display="flex" justifyContent="flex-end">
-        <Typography>
-          * 찾기 기능은 그리드의 필터링 기능을 이용하세요.{' '}
-        </Typography>
-      </Box>
       {crud === 'r' && (
-        <MGrid
-          onRowDoubleClick={doubleClicked}
-          rowId="vid"
-          data={data}
-          cols={columns}
-          columnVisibilityModel={columnVisibilityModel}
-        />
+        <>
+          <Box display="flex" justifyContent="flex-end">
+            <Typography>
+              * 찾기 기능은 그리드의 필터링 기능을 이용하세요.{' '}
+            </Typography>
+          </Box>
+          <MGrid
+            onRowDoubleClick={doubleClicked}
+            rowId="vid"
+            data={data}
+            cols={columns}
+            columnVisibilityModel={columnVisibilityModel}
+          />
+        </>
       )}
       {crud !== 'r' && (
-        <YoutubePastorSave upperFn={fnSub} params={editParams} crud={crud} />
+        <VideoPastorRegister upperFn={fnSub} params={editParams} crud={crud} />
       )}
     </>
   );
