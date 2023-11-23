@@ -7,6 +7,7 @@ import { tokens } from '../../theme';
 const AreacodeList = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
   /** data */
   const { isLoading, data, isError, error } = useFetchAreaCode();
 
