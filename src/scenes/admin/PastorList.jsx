@@ -25,31 +25,26 @@ const PastorList = () => {
       field: 'churchName',
       headerName: '교회명',
       flex: 1,
-      cellClassName: 'name-column--cell',
     },
     {
       field: 'grade',
       headerName: 'grade',
       flex: 1,
-      cellClassName: 'name-column--cell',
     },
     {
       field: 'name',
       headerName: '이름',
       flex: 1,
-      cellClassName: 'name-column--cell',
     },
     {
       field: 'pic',
       headerName: 'Picture',
       flex: 1,
-      cellClassName: 'name-column--cell',
     },
     {
       field: 'updDt',
       headerName: '최종수정',
       flex: 1,
-      cellClassName: 'name-column--cell',
     },
   ];
 

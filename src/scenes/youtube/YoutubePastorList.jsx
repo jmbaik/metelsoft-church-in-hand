@@ -42,43 +42,36 @@ const YoutubePastorList = () => {
       field: 'pastorName',
       headerName: '목사',
       flex: 1,
-      cellClassName: 'name-column--cell',
     },
     {
       field: 'title',
       headerName: '제목',
       flex: 3,
-      cellClassName: 'name-column--cell',
     },
     {
       field: 'createYmd',
       headerName: '생성일',
       flex: 1,
-      cellClassName: 'name-column--cell',
     },
     {
       field: 'channelId',
       headerName: 'channel ID',
       flex: 1,
-      cellClassName: 'name-column--cell',
     },
     {
       field: 'channelTitle',
       headerName: '출처',
       flex: 1,
-      cellClassName: 'name-column--cell',
     },
     {
       field: 'userId',
       headerName: '생성자',
       flex: 1,
-      cellClassName: 'name-column--cell',
     },
     {
       field: 'updDt',
       headerName: '최종수정일',
       flex: 1,
-      cellClassName: 'name-column--cell',
     },
     {
       field: 'grade',

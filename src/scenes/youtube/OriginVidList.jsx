@@ -18,25 +18,21 @@ const OriginVidList = () => {
       field: 'channelTitle',
       headerName: '제목',
       flex: 2,
-      cellClassName: 'name-column--cell',
     },
     {
       field: 'description',
       headerName: '설명',
       flex: 1,
-      cellClassName: 'name-column--cell',
     },
     {
       field: 'userId',
       headerName: '생성자',
       flex: 1,
-      cellClassName: 'name-column--cell',
     },
     {
       field: 'updDt',
       headerName: '최종수정',
       flex: 1,
-      cellClassName: 'name-column--cell',
     },
   ];
 

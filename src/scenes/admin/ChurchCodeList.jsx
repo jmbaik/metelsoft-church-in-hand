@@ -23,19 +23,16 @@ const ChurchCodeList = () => {
       field: 'name',
       headerName: '교회명',
       flex: 1,
-      cellClassName: 'name-column--cell',
     },
     {
       field: 'comment',
       headerName: '설명',
       flex: 1,
-      cellClassName: 'name-column--cell',
     },
     {
       field: 'pic',
       headerName: 'Picture',
       flex: 1,
-      cellClassName: 'name-column--cell',
     },
   ];
 
